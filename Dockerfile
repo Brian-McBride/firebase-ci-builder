@@ -79,23 +79,23 @@ RUN yarn global add firebase-tools@${FIREBASE_VERSION} \
 #
 RUN firebase setup:emulators:database
 RUN firebase setup:emulators:firestore
-#RUN firebase setup:emulators:storage
-#RUN firebase setup:emulators:pubsub \
-#  && rm /root/.cache/firebase/emulators/pubsub-emulator*.zip
+RUN firebase setup:emulators:storage
+RUN firebase setup:emulators:pubsub \
+  && rm /root/.cache/firebase/emulators/pubsub-emulator*.zip
 
 # Note: We also bring in the emulator UI, though it's not needed in CI. This helps in using the same image also in dev.
 #
 RUN firebase setup:emulators:ui \
   && rm -rf /root/.cache/firebase/emulators/ui-v*.zip
 
-  # $ ls .cache/firebase/emulators/
-  #   cloud-firestore-emulator-v1.12.0.jar    (57,5 MB)
-  #   cloud-storage-rules-runtime-v1.0.0.jar  (31,7 MB)   ; NOT PRE-FETCHED (people can use it; will get downloaded if they do)
-  #   firebase-database-emulator-v4.7.2.jar   (27,6 MB)
-  #   pubsub-emulator-0.1.0                   (37,9 MB)   ; NOT PRE-FETCHED (-''-)
-  #   pubsub-emulator-0.1.0.zip               (34,9 MB)   ; removed
-  #   ui-v1.5.0                               (24 MB)
-  #   ui-v1.5.0.zip                           (6 MB)      ; removed
+# $ ls .cache/firebase/emulators/
+#   cloud-firestore-emulator-v1.12.0.jar    (57,5 MB)
+#   cloud-storage-rules-runtime-v1.0.0.jar  (31,7 MB)   ; NOT PRE-FETCHED (people can use it; will get downloaded if they do)
+#   firebase-database-emulator-v4.7.2.jar   (27,6 MB)
+#   pubsub-emulator-0.1.0                   (37,9 MB)   ; NOT PRE-FETCHED (-''-)
+#   pubsub-emulator-0.1.0.zip               (34,9 MB)   ; removed
+#   ui-v1.5.0                               (24 MB)
+#   ui-v1.5.0.zip                           (6 MB)      ; removed
 
 # Setting the env.var so 'firebase-tools' finds the images.
 #
@@ -109,6 +109,14 @@ RUN firebase setup:emulators:ui \
 #   so it might seize to work, one day... #good-enough
 #
 ENV FIREBASE_EMULATORS_PATH '/root/.cache/firebase/emulators'
+
+### GCP Emulator Settings
+ENV FIREBASE_AUTH_EMULATOR_HOST="localhost:9100"
+ENV FIRESTORE_EMULATOR_HOST="localhost:9101"
+ENV FIREBASE_DATABASE_EMULATOR_HOST="localhost:9102"
+ENV PUBSUB_EMULATOR_HOST="localhost:9103"
+ENV FIREBASE_STORAGE_EMULATOR_HOST="localhost:9105"
+ENV DISABLE_PUBSUB_AUTH=true
 
 #|# Be eventually a user rather than root
 #|#

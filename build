@@ -19,7 +19,7 @@ set -eu -o pipefail
 # Note: Keep this name, read from 'push-to-gcr'.
 _VERSION=9.12.1
 
-_IMAGE_NAME=firebase-ci-builder
+_IMAGE_NAME=anatidae/firebase-ci-builder
 
 # Note: '-nodeXY-npmZ' is NOT connected with what the base image in 'Dockerfile' provides. MAINTAIN MANUALLY!!!
 _TAG=${_VERSION}-node16-npm7
